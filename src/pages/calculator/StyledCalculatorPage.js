@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const StyledCalculatorPage = styled.div`
   width: 80%;
   height: 100%;
-  padding: 5rem;
-  margin: 5% auto;
+  padding-top: 5rem;
+  margin: 0 auto;
   display: flex;
   align-items: start;
   justify-content: space-evenly;

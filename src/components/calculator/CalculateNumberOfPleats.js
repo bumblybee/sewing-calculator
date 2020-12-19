@@ -5,16 +5,31 @@ const CalculateNumberOfPleats = () => {
   const [fabricWidth, setFabricWidth] = useState(null);
   const [pleatWidth, setPleatWidth] = useState(null);
   const [spacing, setSpacing] = useState(null);
+  const [pleatType, setPleatType] = useState(null);
   const [calculation, setCalculation] = useState(null);
 
   const calcPleats = () => {
-    let result = Number(pleatWidth) * 3;
-    if (spacing !== null) {
-      result = Number(result) + Number(spacing);
-    }
-    console.log(result);
+    let width;
 
-    setCalculation((fabricWidth / result).toFixed(2));
+    if (pleatType === "box") {
+      width = Number(pleatWidth) * 3;
+    } else if (pleatType === "knife") {
+      width = Number(pleatWidth) * 2;
+    } else if (!pleatType) {
+      return alert("Please choose a type of pleat.");
+    }
+
+    if (spacing !== null) {
+      width = Number(width) + Number(spacing);
+    }
+    console.log(width);
+    const numberOfPleats = (fabricWidth / width).toFixed(2);
+
+    if (numberOfPleats % 1 !== 0) {
+      const remainder = numberOfPleats % 1;
+    }
+
+    setCalculation(Number(numberOfPleats));
   };
 
   return (
@@ -26,14 +41,15 @@ const CalculateNumberOfPleats = () => {
         </sc.StyledResult>
       ) : (
         <>
-          <h2>Calculate number of pleats based on fabric length</h2>
+          <h2>Number of Pleats</h2>
+          <p>Calculate total number of pleats</p>
           <sc.StyledFormGroup>
-            <label htmlFor="fabricLength">Fabric Length</label>
+            <label htmlFor="waistband">Waistband Width</label>
             <sc.StyledFormInput
               onChange={(e) => setFabricWidth(e.target.value)}
               type="number"
-              name="fabricLength"
-              id="fabricLength"
+              name="waistband"
+              id="waistband"
               placeholder="inches"
               value={fabricWidth}
             />
@@ -64,7 +80,44 @@ const CalculateNumberOfPleats = () => {
           </sc.StyledFormGroup>
 
           <sc.StyledFormGroup>
-            <sc.StyledButton onClick={calcPleats}>Calculate</sc.StyledButton>
+            <label htmlFor="type">Pleat Type</label>
+            <div style={{ display: "flex" }}>
+              <label style={{ marginRight: "1rem" }}>
+                <input
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                    setPleatType(
+                      e.target.checked && e.target.value.toLowerCase()
+                    );
+                  }}
+                  type="checkbox"
+                  name="type"
+                  id="type"
+                  value="knife"
+                />{" "}
+                Knife
+              </label>
+              <label>
+                <input
+                  onChange={(e) => {
+                    setPleatType(
+                      e.target.checked && e.target.value.toLowerCase()
+                    );
+                  }}
+                  type="checkbox"
+                  name="type"
+                  id="type"
+                  value="box"
+                />{" "}
+                Box
+              </label>
+            </div>
+          </sc.StyledFormGroup>
+
+          <sc.StyledFormGroup>
+            <sc.StyledButton onClick={fabricWidth && calcPleats}>
+              Calculate
+            </sc.StyledButton>
           </sc.StyledFormGroup>
         </>
       )}
